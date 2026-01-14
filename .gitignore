@@ -13,6 +13,7 @@ ENV/
 data/*.db
 data/*.json
 output/*.html
+!output/self_analysis.html
 output/*.json
 
 # IDE

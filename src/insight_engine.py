@@ -124,22 +124,22 @@ class InsightEngine:
         # Instability
         if insights['instability_periods']:
             count = len(insights['instability_periods'])
-            summary.append(f"⚠ {count} instability period(s) detected with >2× normal churn")
+            summary.append(f"[!] {count} instability period(s) detected with >2x normal churn")
         
         # Risky files
         if insights['risky_files']:
             top_file = insights['risky_files'][0]
-            summary.append(f"🔥 Top hotspot: {top_file['file']} (score: {top_file['score']})")
+            summary.append(f"[HOT] Top hotspot: {top_file['file']} (score: {top_file['score']})")
         
         # Coupling
         if insights['coupling_warnings']:
-            summary.append(f"🔗 {len(insights['coupling_warnings'])} high-coupling file pairs detected")
+            summary.append(f"[LINK] {len(insights['coupling_warnings'])} high-coupling file pairs detected")
         
         # Stagnation
         if insights['stagnation'].get('stagnant'):
-            summary.append(f"⏸ Possible stagnation detected")
+            summary.append(f"[PAUSE] Possible stagnation detected")
         elif 'halflife_days' in insights['stagnation']:
             days = insights['stagnation']['halflife_days']
-            summary.append(f"✓ Active codebase (half-life: {days:.0f} days)")
+            summary.append(f"[OK] Active codebase (half-life: {days:.0f} days)")
         
         return summary

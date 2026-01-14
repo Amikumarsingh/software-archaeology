@@ -23,28 +23,28 @@ def test_on_self():
     print(f"\n[1/5] Loading repository: {repo_path}")
     loader = RepoLoader(repo_path)
     repo = loader.load()
-    print(f"   ✓ Repository loaded: {repo.workdir}")
+    print(f"   [OK] Repository loaded: {repo.workdir}")
 
     print("\n[2/5] Extracting commit history...")
     walker = CommitWalker(repo)
     db_path = walker.extract_to_db()
-    print(f"   ✓ Database created: {db_path}")
+    print(f"   [OK] Database created: {db_path}")
 
     print("\n[3/5] Computing metrics...")
     calculator = MetricsCalculator(db_path)
     metrics = calculator.compute_all()
-    print(f"   ✓ Computed metrics for {metrics['metadata']['total_commits']} commits")
+    print(f"   [OK] Computed metrics for {metrics['metadata']['total_commits']} commits")
 
     print("\n[4/5] Generating insights...")
     engine = InsightEngine(metrics)
     insights = engine.analyze()
-    print(f"   ✓ Generated {len(insights['summary'])} insights")
+    print(f"   [OK] Generated {len(insights['summary'])} insights")
 
     print("\n[5/5] Creating report...")
     generator = ReportGenerator(metrics, insights)
     output_path = 'output/self_test_report.html'
     generator.generate(output_path)
-    print(f"   ✓ Report saved: {output_path}")
+    print(f"   [OK] Report saved: {output_path}")
 
     print("\n" + "="*60)
     print("SUMMARY")
@@ -53,7 +53,7 @@ def test_on_self():
         print(f"  {item}")
     print("="*60)
     
-    print(f"\n✓ Test complete! Open {output_path} in your browser.")
+    print(f"\n[SUCCESS] Test complete! Open {output_path} in your browser.")
 
 
 if __name__ == '__main__':

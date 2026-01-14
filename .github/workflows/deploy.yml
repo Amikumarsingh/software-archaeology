@@ -15,21 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
+      - name: Copy demo report
         run: |
-          pip install -r requirements.txt
-      
-      - name: Generate demo report
-        run: |
-          python archaeology.py . --output demo_report.html
+          cp output/self_analysis.html demo_report.html
       
       - name: Create index page
         run: |

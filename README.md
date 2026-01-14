@@ -2,6 +2,8 @@
 
 > Analyze how your codebase evolves over time, identify volatility hotspots, and surface signals of technical debt.
 
+🔗 **[Live Demo](https://amikumarsingh.github.io/software-archaeology/)** | 📊 **[Example Report](https://amikumarsingh.github.io/software-archaeology/demo_report.html)**
+
 ## The Problem
 
 Every codebase has a history, but we rarely examine it systematically. We review code at a point in time, but ignore the story of how it evolved.

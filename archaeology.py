@@ -38,7 +38,7 @@ def main():
     generator = ReportGenerator(metrics, insights)
     generator.generate(args.output)
 
-    print(f"\n✓ Analysis complete: {args.output}")
+    print(f"\n[SUCCESS] Analysis complete: {args.output}")
 
 
 if __name__ == '__main__':

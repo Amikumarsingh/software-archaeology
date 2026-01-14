@@ -1,0 +1,158 @@
+name: Deploy Demo to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Generate demo report
+        run: |
+          python archaeology.py . --output demo_report.html
+      
+      - name: Create index page
+        run: |
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <meta charset="utf-8">
+              <title>Software Archaeology - Codebase Time Machine</title>
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                      max-width: 900px;
+                      margin: 50px auto;
+                      padding: 20px;
+                      background: #f5f5f5;
+                  }
+                  .container {
+                      background: white;
+                      padding: 40px;
+                      border-radius: 8px;
+                      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                  }
+                  h1 { color: #333; margin-bottom: 10px; }
+                  .subtitle { color: #666; margin-bottom: 30px; }
+                  .demo-link {
+                      display: inline-block;
+                      background: #0066cc;
+                      color: white;
+                      padding: 15px 30px;
+                      text-decoration: none;
+                      border-radius: 5px;
+                      font-weight: bold;
+                      margin: 20px 10px 20px 0;
+                  }
+                  .demo-link:hover { background: #0052a3; }
+                  .github-link {
+                      display: inline-block;
+                      background: #24292e;
+                      color: white;
+                      padding: 15px 30px;
+                      text-decoration: none;
+                      border-radius: 5px;
+                      font-weight: bold;
+                      margin: 20px 0;
+                  }
+                  .github-link:hover { background: #1b1f23; }
+                  .features {
+                      margin: 30px 0;
+                      padding: 20px;
+                      background: #f8f9fa;
+                      border-radius: 5px;
+                  }
+                  .features ul { margin: 10px 0; }
+                  .features li { margin: 8px 0; }
+                  code {
+                      background: #f4f4f4;
+                      padding: 2px 6px;
+                      border-radius: 3px;
+                      font-family: 'Courier New', monospace;
+                  }
+                  .install {
+                      background: #2d2d2d;
+                      color: #f8f8f2;
+                      padding: 20px;
+                      border-radius: 5px;
+                      margin: 20px 0;
+                  }
+                  .install code {
+                      background: transparent;
+                      color: #f8f8f2;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>📊 Software Archaeology</h1>
+                  <p class="subtitle">Codebase Time Machine - Analyze how your code evolves over time</p>
+                  
+                  <a href="demo_report.html" class="demo-link">View Live Demo Report →</a>
+                  
+                  <div class="features">
+                      <h2>What It Does</h2>
+                      <ul>
+                          <li>📈 Tracks Lines of Code evolution over time</li>
+                          <li>🔥 Identifies hotspot files (high churn + high volatility)</li>
+                          <li>🔗 Detects temporal coupling between files</li>
+                          <li>⚠️ Flags instability periods and risky code</li>
+                          <li>📊 Generates interactive visualizations</li>
+                          <li>🎯 Surfaces technical debt signals</li>
+                      </ul>
+                  </div>
+
+                  <h2>Quick Start</h2>
+                  <div class="install">
+                      <code># Install<br>
+                      pip install -r requirements.txt<br><br>
+                      # Analyze any repository<br>
+                      python archaeology.py /path/to/repo --output report.html<br><br>
+                      # Or analyze remote repos<br>
+                      python archaeology.py https://github.com/user/repo --output report.html</code>
+                  </div>
+
+                  <h2>Why Use This?</h2>
+                  <ul>
+                      <li><strong>Risk Management:</strong> Identify high-churn files before they cause outages</li>
+                      <li><strong>Refactoring Priority:</strong> Focus efforts on volatile, coupled code</li>
+                      <li><strong>Team Onboarding:</strong> Show new engineers which files are "hot" vs stable</li>
+                      <li><strong>Post-Mortem Analysis:</strong> Correlate incidents with code churn patterns</li>
+                  </ul>
+              </div>
+          </body>
+          </html>
+          EOF
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
